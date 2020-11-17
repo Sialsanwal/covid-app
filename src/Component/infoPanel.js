@@ -1,7 +1,8 @@
-import React from 'react';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InfoPanel() {
+
+    const[globalData, setGlobalData] = useState({})
+  useEffect(() => {
+    async function getData() {
+      const responce = await fetch("https://api.covid19api.com/summary");
+      let data = await responce.json();
+      console.log(data.Global);
+    setGlobalData(data.Global);
+
+    }
+  getData();
+  }, [])
+
   const classes = useStyles();
 
   return (
