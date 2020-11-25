@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth:1000,
+    maxWidth: 1000,
     margin: "0 auto",
     marginTop: 50
   },
@@ -15,20 +15,24 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  title:{
+      color: '#3f51b5'
+
+  }
 }));
 
 export default function InfoPanel() {
 
-    const[globalData, setGlobalData] = useState({})
+  const [globalData, setGlobalData] = useState({})
   useEffect(() => {
     async function getData() {
       const responce = await fetch("https://api.covid19api.com/summary");
       let data = await responce.json();
       console.log(data.Global);
-    setGlobalData(data.Global);
+      setGlobalData(data.Global);
 
     }
-  getData();
+    getData();
   }, [])
 
   const classes = useStyles();
@@ -36,17 +40,21 @@ export default function InfoPanel() {
   return (
     <div className={classes.root}>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={4}>
-          <Paper className={classes.paper} elevation={3}>Grid 1</Paper>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Paper className={classes.paper} elevation={3}>Grid 2</Paper>
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <Paper className={classes.paper} elevation={3}>Grid 3</Paper>
-        </Grid>
-        
-        </Grid>
+        {Object.keys(globalData).map((key, ind) => {
+          return (
+            <Grid item xs={12} sm={4} key={ind}>
+              <Paper className={classes.paper} 
+              elevation={3}>
+                <h3 className={classes.title}>{key}</h3>
+                <h3>{globalData[key]}</h3>
+              </Paper>
+            </Grid>
+          )
+        })}
+
+
+
+      </Grid>
     </div>
   );
 }
